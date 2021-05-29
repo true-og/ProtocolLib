@@ -1029,6 +1029,17 @@ public class PacketContainer implements Serializable {
 	}
 
 	/**
+	 * Retrieve a read/write structure for Map Icons in 1.8+
+	 * @return The Structure Modifier
+	 */
+	public StructureModifier<WrappedMapIcon[]> getMapIcons() {
+		return structureModifier.withType(
+				MinecraftReflection.getArrayClass(WrappedMapIcon.NMS_CLASS),
+				Converters.array(WrappedMapIcon.NMS_CLASS, WrappedMapIcon.getConverter())
+		);
+	}
+
+	/**
 	 * Retrieve a read/write structure for the Map class.
 	 * @param keyConverter Converter for map keys
 	 * @param valConverter Converter for map values

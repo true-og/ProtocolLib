@@ -16,8 +16,8 @@
 		<project.build.number></project.build.number>
 		<project.fullVersion>${project.version}</project.fullVersion>
 
-		<powermock.version>2.0.7</powermock.version>
-		<spigot.version>1.16.4-R0.1-SNAPSHOT</spigot.version>
+		<powermock.version>2.0.9</powermock.version>
+		<spigot.version>1.16.5-R0.1-SNAPSHOT</spigot.version>
 	</properties>
 
 	<build>
@@ -112,6 +112,7 @@
 			</plugin>
 
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.2.0</version>
 				<configuration>
@@ -121,10 +122,11 @@
 					<windowtitle>ProtocolLib JavaDocs</windowtitle>
 					<bottom>Copyright &#169; {inceptionYear}&#x2013;{currentYear}
 						Comphenix and dmulloy2. Licensed under the GNU GPL v2.</bottom>
-					<additionalOptions>
-						<additionalOption>-Xdoclint:none</additionalOption>
-					</additionalOptions>
+					<source>8</source>
+					<doclint>none</doclint>
+					<quiet>true</quiet>
 				</configuration>
+				<!--
 				<executions>
 					<execution>
 						<phase>install</phase>
@@ -133,6 +135,7 @@
 						</goals>
 					</execution>
 				</executions>
+				-->
 			</plugin>
 		</plugins>
 	</build>
@@ -168,7 +171,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
-						<version>3.2.1</version>
+						<version>3.2.0</version>
 						<executions>
 							<execution>
 								<id>attach-sources</id>
@@ -310,13 +313,13 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.13.1</version>
+			<version>4.13.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>3.5.10</version>
+			<version>3.10.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

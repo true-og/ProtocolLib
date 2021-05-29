@@ -17,10 +17,14 @@
 package com.comphenix.protocol.wrappers;
 
 import java.lang.reflect.Array;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import com.comphenix.protocol.reflect.EquivalentConverter;
 import com.comphenix.protocol.utility.MinecraftReflection;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Utility class for converters
@@ -103,6 +107,34 @@ public class Converters {
 			@Override
 			public Class<T> getSpecificType() {
 				return specificType;
+			}
+		};
+	}
+
+	/**
+	 * Creates a generic lazy array converter. Similar to the regular array converter, but conversion happens
+	 * on an as-needed basis.
+	 * 
+	 * @param nmsClass
+	 * @param converter
+	 * @param <T>
+	 * @return
+	 */
+	public static <T> EquivalentConverter<List<T>> lazyArray(final Class<?> nmsClass, final EquivalentConverter<T> converter) {
+		return new EquivalentConverter<List<T>>() {
+			@Override
+			public Object getGeneric(List<T> specific) {
+				return null;
+			}
+
+			@Override
+			public List<T> getSpecific(Object generic) {
+				return null;
+			}
+
+			@Override
+			public Class<List<T>> getSpecificType() {
+				return null;
 			}
 		};
 	}
