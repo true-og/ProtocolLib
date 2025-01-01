@@ -1,17 +1,17 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+	id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'com.comphenix.protocol'
-version = '5.0.0'
+version = '5.0.0-dev'
 description = 'Provides access to the Minecraft protocol'
 
 def isSnapshot = version.endsWith('-SNAPSHOT')
 
 repositories {
-    // mavenLocal() // can speed up build, but may fail in CI
+    mavenLocal() // can speed up build, but may fail in CI
     mavenCentral()
 
     maven {
@@ -103,6 +103,10 @@ publishing {
             }
         }
     }
+}
+
+tasks.named("build") {
+    dependsOn("shadowJar")
 }
 
 tasks.withType(JavaCompile) {
