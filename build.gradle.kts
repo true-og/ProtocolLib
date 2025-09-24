@@ -7,7 +7,7 @@ import org.gradle.language.jvm.tasks.ProcessResources
 plugins {
     id("java-library")
     id("eclipse")
-    id("com.gradleup.shadow") version "8.3.5"
+    id("com.gradleup.shadow") version "8.3.8"
 }
 
 group = "com.comphenix.protocol"
