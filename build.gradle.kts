@@ -2,6 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.api.tasks.testing.Test
+import org.gradle.jvm.tasks.Jar
 import org.gradle.language.jvm.tasks.ProcessResources
 
 plugins {
@@ -130,8 +131,6 @@ java {
     }
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
-    withJavadocJar()
-    withSourcesJar()
 }
 
 tasks.named<ShadowJar>("shadowJar") {
@@ -140,6 +139,10 @@ tasks.named<ShadowJar>("shadowJar") {
     }
     relocate("net.bytebuddy", "com.comphenix.net.bytebuddy")
     archiveFileName.set("ProtocolLib.jar")
+}
+
+tasks.named<Jar>("jar") {
+    enabled = false
 }
 
 tasks.named<Test>("test") {
