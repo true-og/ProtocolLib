@@ -138,7 +138,7 @@ tasks.named<ShadowJar>("shadowJar") {
         include(dependency("net.bytebuddy:byte-buddy:.*"))
     }
     relocate("net.bytebuddy", "com.comphenix.net.bytebuddy")
-    archiveFileName.set("ProtocolLib.jar")
+    archiveFileName.set("ProtocolLib-${project.version}.jar")
 }
 
 tasks.named<Jar>("jar") {
