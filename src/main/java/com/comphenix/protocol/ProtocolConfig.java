@@ -25,6 +25,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Represents the configuration of ProtocolLib.
@@ -275,7 +278,24 @@ public class ProtocolConfig {
 	 * @return Every suppressed report type.
 	 */
 	public ImmutableList<String> getSuppressedReports() {
-		return ImmutableList.copyOf(getGlobalValue(SUPPRESSED_REPORTS, new ArrayList<String>()));
+		Object value = getGlobalValue(SUPPRESSED_REPORTS, Collections.emptyList());
+
+		if (value instanceof Collection<?>) {
+			List<String> reports = new ArrayList<>();
+			for (Object entry : (Collection<?>) value) {
+				if (entry != null) {
+					reports.add(String.valueOf(entry));
+				}
+			}
+			return ImmutableList.copyOf(reports);
+		}
+
+		if (value instanceof String) {
+			String report = ((String) value).trim();
+			return report.isEmpty() ? ImmutableList.of() : ImmutableList.of(report);
+		}
+
+		return ImmutableList.of();
 	}
 
 	/**
@@ -294,7 +314,16 @@ public class ProtocolConfig {
 	 * @return The version to ignore ProtocolLib's satefy.
 	 */
 	public String getIgnoreVersionCheck() {
-		return getGlobalValue(IGNORE_VERSION_CHECK, "");
+		Object value = getGlobalValue(IGNORE_VERSION_CHECK, "");
+
+		if (value instanceof String) {
+			return (String) value;
+		}
+		if (value instanceof Boolean) {
+			return (Boolean) value ? "true" : "";
+		}
+
+		return value != null ? String.valueOf(value) : "";
 	}
 
 	/**
