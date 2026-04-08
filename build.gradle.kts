@@ -18,31 +18,38 @@ description = "Provides access to the Minecraft protocol"
 val isSnapshot = version.toString().endsWith("-SNAPSHOT")
 
 repositories {
+    val bootstrapRepo = System.getProperty("SELF_MAVEN_LOCAL_REPO")?.let { // TrueOG Bootstrap mavenLocal().
+        val dir = file(it)
+        if (dir.isDirectory) {
+            println("Using SELF_MAVEN_LOCAL_REPO at: $it")
+            dir
+        } else {
+            logger.error("TrueOG Bootstrap not found, defaulting to ~/.m2 for mavenLocal()")
+            null
+        }
+    } ?: run {
+        logger.error("TrueOG Bootstrap not found, defaulting to ~/.m2 for mavenLocal()")
+        null
+    }
+
+    // Prefer the bootstrap-local Spigot artifacts when present. If ~/.m2 contains
+    // partial module metadata, resolving there first can block Gradle from falling
+    // through to the bootstrap repo for the actual jar.
     maven {
-        url = uri("file://${System.getProperty("user.home")}/.m2/repository")
+        url = uri("file://${(bootstrapRepo ?: file("${System.getProperty("user.home")}/.m2/repository")).absolutePath}")
         content {
             includeGroup("org.spigotmc")
         }
     }
-    System.getProperty("SELF_MAVEN_LOCAL_REPO")?.let { // TrueOG Bootstrap mavenLocal().
-        val dir = file(it)
-        if (dir.isDirectory) {
-            println("Using SELF_MAVEN_LOCAL_REPO at: $it")
-            maven {
-                url = uri("file://${dir.absolutePath}")
-                content {
-                    includeGroup("org.spigotmc")
-                }
-            }
-        } else {
-            logger.error("TrueOG Bootstrap not found, defaulting to ~/.m2 for mavenLocal()")
-            mavenLocal {
-                content {
-                    includeGroup("org.spigotmc")
-                }
+
+    if (bootstrapRepo != null) {
+        maven {
+            url = uri("file://${System.getProperty("user.home")}/.m2/repository")
+            content {
+                includeGroup("org.spigotmc")
             }
         }
-    } ?: logger.error("TrueOG Bootstrap not found, defaulting to ~/.m2 for mavenLocal()")
+    }
     mavenCentral()
     maven {
         name = "Rosewood Public"
